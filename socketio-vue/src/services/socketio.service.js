@@ -5,7 +5,11 @@ class SocketioService {
   constructor() {}
 
   setupSocketConnection() {
-    this.socket = io(process.env.VUE_APP_SOCKET_ENDPOINT);
+    this.socket = io(process.env.VUE_APP_SOCKET_ENDPOINT, {
+      auth: {
+        token: 'vue_token'
+      },
+    });
     this.socket.emit('my message', 'Hello there from Vue.');
     
     this.socket.on('my broadcast', (data) => {
