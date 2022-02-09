@@ -2,11 +2,7 @@ import { io } from 'socket.io-client';
 
 let socket;
 export const initiateSocketConnection = (room) => {
-  socket = io(process.env.REACT_APP_SOCKET_ENDPOINT, {
-		auth: {
-			token: 'cde'
-		},
-	});
+  socket = io(process.env.REACT_APP_SOCKET_ENDPOINT);
 	console.log(`Connecting socket...`);
 }
 export const disconnectSocket = () => {
@@ -14,13 +10,14 @@ export const disconnectSocket = () => {
   if(socket) socket.disconnect();
 }
 export const subscribeToChat = (cb) => {
-	socket.emit('my message', 'Hello there from React.');
+    let mes =  "{message: hi from react app}";
+	socket.emit('CHAT', mes);
   if (!socket) return(true);
-  socket.on('my broadcast', msg => {
+  socket.on('CHAT', msg => {
     console.log('Websocket event received!');
     return cb(null, msg);
   });
 }
 export const sendMessage = (room, message) => {
-  if (socket) socket.emit('chat', { message, room });
+  if (socket) socket.emit('CHAT', { message, room });
 }
